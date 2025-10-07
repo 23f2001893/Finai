@@ -5,23 +5,31 @@ from models import *
 from security import jwt
 from flask_cors import CORS
 
+from dotenv import load_dotenv
+import os
+import google.generativeai as genai
+
+# Load environment variables
+load_dotenv()
+
+# Configure Gemini with key
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 app=None
 def create_app():
     app=Flask(__name__)
+    app.secret_key = "my_super_secret_key_12345"
+    CORS(app,supports_credentials=True,origins=["http://localhost:5173","https://finai.vercel.app"])
     app.config.from_object(LocalDevelopmentConfig)
     db.init_app(app)
     jwt.init_app(app)
-    CORS(app)
+  
     app.app_context().push()
     return app
 app=create_app()
 
 
+
 from routes import *
 if __name__ == "__main__":
-    #db.create_all()
-    #db.session.add(User(username="Lalit",password="7004",isadmin="1",village="murup"))
-    #db.session.add(User(username="Amit",password="8340",village="murup"))
 
-    #db.session.commit()
     app.run(debug=True)

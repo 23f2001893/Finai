@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #f4f8ff;
+}
+
+.registration-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.form-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 255, 0.1);
+  padding: 40px;
+  width: 350px;
+  text-align: center;
+}
+
+.form-title {
+  color: #004aad;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  text-align: left;
+  color: #004aad;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1.5px solid #bcd3ff;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #004aad;
+}
+
+.submit-btn {
+  background-color: #004aad;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin-top: 20px;
+  padding: 12px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #0066ff;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
