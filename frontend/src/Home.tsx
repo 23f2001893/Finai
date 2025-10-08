@@ -15,10 +15,10 @@ const Home: React.FC = () => {
       <p className="text-lg md:text-xl text-gray-600 text-center max-w-xl mb-8">
         Your personal AI chatbot for managing finance, budgeting, and smarter money decisions.
       </p>
-
+      <div className="flex flex-col sm:flex-row gap-6 mb-10">
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row gap-4">
-        <button
+        <button 
           onClick={() => navigate("/login")}
           className="px-8 py-3 bg-indigo-600 text-white rounded-full font-semibold shadow-md hover:bg-indigo-700 transition"
         >
@@ -31,14 +31,7 @@ const Home: React.FC = () => {
         >
           Register
         </button>
-      </div>
-
-      {/* Navigation Links */}
-      <div className="mt-10 flex gap-6 text-sm text-gray-600">
-        <Link to="/" className="hover:text-indigo-600 transition">Home</Link>
-        <Link to="/about" className="hover:text-indigo-600 transition">About</Link>
-        <Link to="/contact" className="hover:text-indigo-600 transition">Contact</Link>
-      </div>
+      </div></div>
 
       {/* Footer */}
       <footer className="mt-16 text-gray-400 text-xs">

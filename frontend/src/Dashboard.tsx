@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ChatBot from "./ChatBot";
-
+import Dashboard2 from "./Dashboard2";
 interface DashboardData {
   username: string;
   balance: number;
@@ -60,7 +60,10 @@ const Dashboard: React.FC = () => {
         <h1 className="text-4xl font-bold text-indigo-600 mb-6">
           Welcome, {data?.username}!
         </h1>
-           <ChatBot />
+        <div className="flex space-x-5">
+          <div >  <ChatBot /></div>
+          <div > <Dashboard2 /></div>
+           </div>
 
         <div className="mt-8">
           
