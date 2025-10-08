@@ -4,7 +4,11 @@ from flask_jwt_extended import create_access_token,current_user,jwt_required,get
 from functools import wraps
 import google.generativeai as genai
 import os
+import pandas as pd
 
+
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 @app.route("/api/login",methods=["POST"])
 def login():
     data = request.get_json()
@@ -85,5 +89,67 @@ def chat():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/custdata', methods=['POST'])
+def custdata():
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"message": "Invalid JSON"}), 400
 
+        food = data.get("ManualExpenseFood")
+        clothing = data.get("ManualExpenseClothing")
+        travel= data.get("manualExpenseTravel")
+        education= data.get("ManualExpenseEducation")
+
+        return jsonify({"message": "User added successfully"}), 201
+
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({"message": "Internal server error"}), 500
+
+@app.route("/analyze-expenses", methods=["POST"])
+def analyze_expenses():
+    try:
+        # Check if file is uploaded
+        if "file" not in request.files:
+            return jsonify({"error": "No file uploaded"}), 400
+
+        file = request.files["file"]
+        filepath = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(filepath)
+
+        # Read the file
+        if file.filename.endswith(".csv"):
+            df = pd.read_csv(filepath)
+        elif file.filename.endswith(".xlsx"):
+            df = pd.read_excel(filepath)
+        else:
+            return jsonify({"error": "Unsupported file type"}), 400
+
+        # Convert to text summary (keep it short for the model)
+        text_data = df.head(30).to_string(index=False)
+
+        # Send to Gemini for categorization
+        prompt = f"""
+        You are a financial data analyst. 
+        Categorize each transaction below into one of: Food, Clothing, Travel, Education
+        Return the total spend in each category as JSON.
+        Transactions:\n{text_data}
+        """
+
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(prompt)
+
+        # Extract clean JSON (Gemini usually returns code block)
+        import re, json
+        match = re.search(r"\{.*\}", response.text, re.DOTALL)
+        if match:
+            data = json.loads(match.group(0))
+        else:
+            data = {"error": "Could not parse AI response", "raw": response.text}
+
+        return jsonify(data)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
  

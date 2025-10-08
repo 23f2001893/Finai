@@ -14,6 +14,9 @@ load_dotenv()
 
 # Configure Gemini with key
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 app=None
 def create_app():
     app=Flask(__name__)
